@@ -7,13 +7,13 @@
 import * as React from "react"
 
 import { IncrementalDeltaRegionTracker } from "./../DeltaRegionTracker"
-import { NeovimInstance } from "./../NeovimInstance"
-import { DOMRenderer } from "./../Renderer/DOMRenderer"
+import { NeovimInstance } from "./../neovim"
+import { INeovimRenderer } from "./../Renderer"
 
 export interface INeovimRendererProps {
     neovimInstance: NeovimInstance
     deltaRegionTracker: IncrementalDeltaRegionTracker
-    renderer: DOMRenderer
+    renderer: INeovimRenderer
 }
 
 export class NeovimRenderer extends React.PureComponent<INeovimRendererProps, void> {

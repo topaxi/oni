@@ -7,6 +7,8 @@ import * as path from "path"
 import * as Performance from "./Performance"
 import * as Platform from "./Platform"
 
+export type RenderStrategy = "canvas" | "dom"
+
 export interface IConfigValues {
     // Debug settings
     "debug.incrementalRenderRegions": boolean
@@ -66,8 +68,14 @@ export interface IConfigValues {
     "editor.fontSize": string
     "editor.fontFamily": string // Platform specific
 
+    "editor.renderer": RenderStrategy
+
     // If true (default), the buffer scroll bar will be visible
     "editor.scrollBar.visible": boolean
+
+    // Additional paths to include when launching sub-process from Oni
+    // (and available in terminal integration, later)
+    "environment.additionalPaths": string[]
 
     // Command to list files for 'quick open'
     // For example, to use 'ag': ag --nocolor -l .
@@ -87,6 +95,7 @@ export interface IConfigValues {
     "editor.cursorColumnOpacity": number
 
     "statusbar.enabled": boolean
+    "statusbar.fontSize": string
 }
 
 export class Config extends EventEmitter {
@@ -110,8 +119,8 @@ export class Config extends EventEmitter {
 
         "oni.exclude": ["**/node_modules/**"],
 
-        "editor.backgroundOpacity": 0.7,
-        "editor.backgroundImageUrl": "images/background.png",
+        "editor.backgroundOpacity": 1.0,
+        "editor.backgroundImageUrl": null,
         "editor.backgroundImageSize": "initial",
 
         "editor.quickInfo.enabled": true,
@@ -127,6 +136,8 @@ export class Config extends EventEmitter {
 
         "editor.quickOpen.execCommand": null,
 
+        "editor.renderer": "canvas",
+
         "editor.scrollBar.visible": true,
 
         "editor.fullScreenOnStart" : false,
@@ -137,20 +148,34 @@ export class Config extends EventEmitter {
         "editor.cursorColumn": false,
         "editor.cursorColumnOpacity": 0.1,
 
+        "environment.additionalPaths": [],
+
         "statusbar.enabled": true,
+        "statusbar.fontSize": "12px",
     }
 
     private MacConfig: Partial<IConfigValues> = {
         "editor.fontFamily": "Menlo",
         "editor.fontSize": "12px",
+        "statusbar.fontSize": "10px",
+        "environment.additionalPaths": [
+            "/usr/bin",
+            "/usr/local/bin",
+        ],
     }
 
     private WindowsConfig: Partial<IConfigValues> = {
         "editor.fontFamily": "Consolas",
+        "statusbar.fontSize": "11px",
     }
 
     private LinuxConfig: Partial<IConfigValues> = {
         "editor.fontFamily": "DejaVu Sans Mono",
+        "statusbar.fontSize": "11px",
+        "environment.additionalPaths": [
+            "/usr/bin",
+            "/usr/local/bin",
+        ],
     }
 
     private DefaultPlatformConfig = Platform.isWindows() ? this.WindowsConfig : Platform.isLinux() ? this.LinuxConfig : this.MacConfig

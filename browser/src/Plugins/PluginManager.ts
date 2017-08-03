@@ -4,7 +4,7 @@ import * as mkdirp from "mkdirp"
 import * as os from "os"
 import * as path from "path"
 import * as Config from "./../Config"
-import { INeovimInstance } from "./../NeovimInstance"
+import { INeovimInstance } from "./../neovim"
 import { CallbackCommand, CommandManager } from "./../Services/CommandManager"
 import * as UI from "./../UI/index"
 
@@ -205,7 +205,7 @@ export class PluginManager extends EventEmitter {
                 setTimeout(() => UI.Actions.setDetailedCompletionEntry(pluginResponse.payload.details))
                 break
             case "set-errors":
-                this.emit("set-errors", pluginResponse.payload.key, pluginResponse.payload.fileName, pluginResponse.payload.errors, pluginResponse.payload.color)
+                this.emit("set-errors", pluginResponse.payload.key, pluginResponse.payload.fileName, pluginResponse.payload.errors)
                 break
             case "find-all-references":
                 this.emit("find-all-references", pluginResponse.payload.references)

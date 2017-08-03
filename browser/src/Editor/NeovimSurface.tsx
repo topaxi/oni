@@ -7,12 +7,15 @@
 import * as React from "react"
 
 import { IncrementalDeltaRegionTracker } from "./../DeltaRegionTracker"
-import { NeovimInstance } from "./../NeovimInstance"
-import { DOMRenderer } from "./../Renderer/DOMRenderer"
+import { NeovimInstance } from "./../neovim"
+import { INeovimRenderer } from "./../Renderer"
 import { NeovimScreen } from "./../Screen"
 
+import { ActiveWindowContainer } from "./../UI/components/ActiveWindow"
+import { ConnectedBufferScrollBar } from "./../UI/components/BufferScrollBar"
 import { Cursor } from "./../UI/components/Cursor"
 import { CursorLine } from "./../UI/components/CursorLine"
+import { ErrorsContainer } from "./../UI/components/Error"
 
 import { NeovimInput } from "./NeovimInput"
 import { NeovimRenderer } from "./NeovimRenderer"
@@ -20,7 +23,7 @@ import { NeovimRenderer } from "./NeovimRenderer"
 export interface INeovimSurfaceProps {
     neovimInstance: NeovimInstance
     deltaRegionTracker: IncrementalDeltaRegionTracker
-    renderer: DOMRenderer
+    renderer: INeovimRenderer
     screen: NeovimScreen
 }
 
@@ -34,6 +37,10 @@ export class NeovimSurface extends React.PureComponent<INeovimSurfaceProps, void
                 <Cursor />
                 <CursorLine lineType={"line"} />
                 <CursorLine lineType={"column"} />
+                <ActiveWindowContainer>
+                    <ErrorsContainer />
+                    <ConnectedBufferScrollBar />
+                </ActiveWindowContainer>
             </div>
             <NeovimInput neovimInstance={this.props.neovimInstance}
                 screen={this.props.screen} />
