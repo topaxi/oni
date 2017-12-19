@@ -1039,6 +1039,7 @@
 		"pp": "_puppet",
 		"epp": "_puppet",
 		"cjsx": "_react",
+		"rb": "_ruby",
 		"erb.html": "_ruby",
 		"html.erb": "_ruby",
 		"sass": "_sass",
